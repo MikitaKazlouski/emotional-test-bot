@@ -1,0 +1,30 @@
+Id Саша: {
+           message_id: 435,
+           from: {
+             id: 548338302,
+             is_bot: false,
+             first_name: 'Александр',
+             language_code: 'ru'
+           },
+           chat: { id: 548338302, first_name: 'Александр', type: 'private' },
+           date: 1599658777,
+           text: 'Тест'
+         }
+
+
+Id Никита: from: {
+               id: 411172870,
+               is_bot: false,
+               first_name: 'Mikita',
+               username: 'nk_officia1',
+               language_code: 'ru'
+             },
+             chat: {
+               id: 411172870,
+               first_name: 'Mikita',
+               username: 'nk_officia1',
+               type: 'private'
+             },
+             date: 1599658702,
+             text: 'd'
+           }
