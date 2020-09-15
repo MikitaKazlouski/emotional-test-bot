@@ -28,6 +28,12 @@ const test1Answers = [
 const test1CorrectAnswersId = [0, 2, 2, 1, 0, 3, 1, 2, 2, 0]
 let startKeyboard = ['Закрыть', 'Помощь']
 
+
+let fs = require('fs')
+let userAnswers = {
+    answers: [],
+};
+
 const bot = new TelegramBot(TOKEN, {
     polling: true
 })
@@ -38,7 +44,7 @@ Array.prototype.insert = function (index, item) {
 //TELEGRAM BOT
 bot.onText(/\/start/, (msg) => {
     const {id} = msg.chat
-    bot.sendMessage(id, 'Привет, ' + msg.from.first_name + '!\n Какой тест ты хотел(а) бы пройти?', {
+    bot.sendMessage(id, 'Привет, ' + msg.from.first_name + '!\nКакой тест ты хотел(а) бы пройти?', {
         reply_markup: {
             keyboard: [startKeyboard]
         }
@@ -54,7 +60,7 @@ bot.onText(/Закрыть/, (msg) => {
     })
 })
 
-bot.onText(/Тест 1/, (msg) => {
+bot.onText(/\/test1/, (msg) => {
     const {id} = msg.chat
     let count = 0
     let interval = setInterval(function (){
@@ -71,18 +77,24 @@ bot.onText(/Тест 1/, (msg) => {
     }, 500)
 })
 
-let userAnswers = []
-
 bot.on('poll_answer', (answer) => {
     console.log(answer)
-    if (userAnswers.length >= 10){
-        console.log('answers collected')
-
-    } else {
-        userAnswers.push(answer.option_ids[0])
-        console.log(userAnswers)
-    }
+    userAnswers.answers.push(answer)
 })
+
+bot.onText(/\/json/, (msg) => {
+    const {id} = msg.chat
+    fs.writeFileSync('userAnswers.json', JSON.stringify(userAnswers))
+    bot.sendMessage(id, 'Ответы записаны! \nНачинаю запись файла...')
+    bot.sendDocument(id,'./userAnswers.json')
+})
+
+bot.onText(/delete/, (msg) => {
+    const {id} = msg.chat
+    fs.unlinkSync('userAnswers.json')
+    bot.sendMessage(id, 'Ответы очищены')
+})
+
 
 
 
